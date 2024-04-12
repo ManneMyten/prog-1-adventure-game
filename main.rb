@@ -27,26 +27,42 @@ def current_room()
 end
 
 def action(action) #Ska uppdatera olika variabler som inventory och coordinater baserat på användarens input
+    valid_input = false
     
-    
-    if $player_room == "entrance"
-        allowed_actions = ["right", "left", "forward"]
-    elsif $player_room ==
-        
+    while valid_input == false
+        if $player_room == "path"
+            if action[0] == "forward" || action[1] == "forward"
+                if player_coordinates[0] + 1 != "path"
+                    valid_input = false
+                    puts "There is no way forward, choose another path"
+                    action = gets.chomp.split
+                else
+                    valid_input = true
+                    $player_coordinates[0] += 1
+                end
+                # fortsätt skriva här
+            end
+
+        elsif $player_room == "entrance"
+            allowed_actions = ["right", "left", "forward"]
+
+        end
     end
     #Add validation of input
 
-    if 
+    
 end
 
 def main()
     # intro()
     $player_coordinates = [0, 2]
+    restart_game = false
 
-    current_room()
-    user_prompt = gets.chomp.split
+    while restart_game == false
+        current_room()
+        user_prompt = gets.chomp.split
 
-    action(user_prompt)
-    
+        action(user_prompt)
+    end
 
 end
