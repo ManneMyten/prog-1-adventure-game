@@ -1,4 +1,6 @@
 $player_coordinates = [0, 2]
+$coins = 3
+$inventory = ["#{$coins} coins", "rusty dagger"]
 
 #Map kordinater map[row][col]
 $map = [
@@ -16,6 +18,7 @@ def intro()
     puts "You open your eyes and see that you are in a forest clearing, in front of a cave entrance"
 end
 
+#läser upp info om spelarens omgivning
 def current_room()
     $player_room = $map[$player_coordinates[0]][$player_coordinates[1]]
 
@@ -40,10 +43,22 @@ def current_room()
 
 end
 
-def action(action) #Ska uppdatera olika variabler som inventory och coordinater baserat på användarens input
+#Ska uppdatera olika variabler som inventory och coordinater baserat på användarens input
+def action(action) 
     valid_input = false
     
+    
     while valid_input == false
+        if action[0] == "inventory"
+            i = 0
+            puts "In your inventory you have:"
+            while i < $inventory.length
+                puts $inventory[i]
+            end
+
+            break
+        end
+
         if $player_room == "path" || $player_room == "entrance"
             if action[0] == "forward" || action[1] == "forward"
                 if $map[$player_coordinates[0] + 1][$player_coordinates[1]] != "path"
@@ -75,7 +90,8 @@ def action(action) #Ska uppdatera olika variabler som inventory och coordinater 
                     $player_coordinates[1] -= 1
                 end
             end
-        #elsif $player_room... fler rum
+        elsif $player_room == "room1"
+
         end
     end
 
