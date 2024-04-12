@@ -11,11 +11,25 @@ $map = [
     ["room7", "path", "path", "empty", "room8"]
 ]
 
+# def fancy_text()
+#     min_text = "hej och välkommen till miniräknaren
+#         ...\n
+#         skriv vilken funktion du vill använda genom att skriva in rätt siffra \n
+#         0 = avsluta programmet \n
+#         1 = addition mellan två tal \n
+#         2 = multiplikation mellan två tal\n"
+#     i =0
+#     while i <= min_text.length
+#         sleep(rand(0.01..0.15))
+#         print min_text[i]
+#         i +=1
+#     end
+# end
 
 def intro()
-    puts "welcome to the world of Dork"
     puts "type your actions with 3-word prompts"
-    puts "You open your eyes and see that you are in a forest clearing, in front of a cave entrance"
+    puts "You are at the opening of a cave, all you have is an old dagger and three gold coins"
+    puts "type 'inventory' to view your items, and write your actions with the verb first and maximum 3 words"
 end
 
 #läser upp info om spelarens omgivning
@@ -99,13 +113,13 @@ def action(action)
 end
 
 def main()
-    #intro()
+    intro()
     $player_coordinates = [0, 2] #entrance-rummets koordinater
     restart_game = false
 
     while restart_game == false
         current_room()
-        user_prompt = gets.chomp.split
+        user_prompt = gets.chomp.downcase.split
 
         action(user_prompt)
     end
