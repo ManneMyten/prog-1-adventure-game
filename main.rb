@@ -50,6 +50,14 @@ def current_room()
 
     elsif $player_room == "room1" #Spindelrum?
         puts ""
+    elsif $player_room == "room3" || $player_room == "room4"
+        room = roomlist(rand(0..1))
+        fancy_text(room[0])
+
+        if room[1].include?(action[0]) == true
+            #do action
+        end
+
     end
 
 
@@ -123,17 +131,6 @@ def main()
 
         action(user_prompt)
     end
-
-
-    if $player_coordinates == [1, 1]
-        room = roomlist(rand(0..2))
-        fancy_text(room[0])
-
-        if room[1].include?(action[0]) == true
-            #do action
-        end
-    end
-
 end
 
 main()
