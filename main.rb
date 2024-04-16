@@ -51,6 +51,14 @@ def current_room()
 
     elsif $player_room == "room1" #Spindelrum?
         fancy_text "You enter the door to your right to find a dimly lit room with a chest in the center."
+    elsif $player_room == "room3" || $player_room == "room4"
+        room = roomlist(rand(0..1))
+        fancy_text(room[0])
+
+        if room[1].include?(action[0]) == true
+            #do action
+        end
+
     end
 
 
@@ -106,7 +114,7 @@ def action(action)
                 end
 
 
-            else 
+            else
                 if action.include?("right")
                     if $map[$player_coordinates[0]][$player_coordinates[1] - 1].include?("room")
                         valid_input = true
@@ -139,17 +147,6 @@ def main()
 
         action(user_prompt)
     end
-
-
-    if $player_coordinates == [1, 1]
-        room = roomlist(rand(0..2))
-        fancy_text(room[0])
-
-        if room[1].include?(action[0]) == true
-            #do action
-        end
-    end
-
 end
 
 main()
