@@ -42,14 +42,15 @@ def current_room()
         fancy_text("You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?")
 
     elsif $player_room == "path"
+        $possible_actions = ["left", "right", "forward", "open"]
         if $player_coordinates == [1,2]
-            puts "As you walk down the corridor you encounter two doors on either side, while the corridor keeps going. The doors appear to be unlocked."
+            fancy_text "As you walk down the corridor you encounter two doors on either side, while the corridor keeps going. The doors appear to be unlocked."
         elsif $player_coordinates == [2,2]
-            puts "Further down the dark tunnel you see another set of doors, same as the last ones."
+            fancy_text "Further down the dark tunnel you see another set of doors, same as the last ones."
         end
 
     elsif $player_room == "room1" #Spindelrum?
-        puts ""
+        fancy_text "You enter the door to your right to find a dimly lit room with a chest in the center."
     end
 
 
@@ -103,9 +104,24 @@ def action(action)
                         $player_coordinates[1] -= 1
                     end
                 end
+
+
+            else 
+                if action.include?("right")
+                    if $map[$player_coordinates[0]][$player_coordinates[1] - 1].include?("room")
+                        valid_input = true
+                        $player_coordinates[1] -= 1
+                    end
+                end
             end
         elsif $player_room == "room1"
-
+            $possible_actions = ["open", "exit"]
+            if $possible_actions.include?(action[0])
+                valid_input = true
+                if action[0] == "open"
+                    #Kista öppnas
+                end
+            end
         end
     end
 
