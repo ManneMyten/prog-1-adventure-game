@@ -1,6 +1,7 @@
 $player_coordinates = [0, 2]
 $coins = 3
 $inventory = ["#{$coins} coins", "rusty dagger"]
+$possible_actions = []
 
 #Map kordinater map[row][col]
 $map = [
@@ -11,25 +12,20 @@ $map = [
     ["room7", "path", "path", "empty", "room8"]
 ]
 
-# def fancy_text()
-#     min_text = "hej och välkommen till miniräknaren
-#         ...\n
-#         skriv vilken funktion du vill använda genom att skriva in rätt siffra \n
-#         0 = avsluta programmet \n
-#         1 = addition mellan två tal \n
-#         2 = multiplikation mellan två tal\n"
-#     i =0
-#     while i <= min_text.length
-#         sleep(rand(0.01..0.15))
-#         print min_text[i]
-#         i +=1
-#     end
-# end
+def fancy_text(text)
+    i =0
+    while i <= text.length
+        sleep(rand(0.005..0.05))
+        print text[i]
+        i +=1
+    end
+    puts ""
+end
 
 def intro()
-    puts "type your actions with 3-word prompts"
-    puts "You are at the opening of a cave, all you have is an old dagger and three gold coins"
-    puts "type 'inventory' to view your items, and write your actions with the verb first and maximum 3 words"
+    fancy_text("Type your actions with 3-word prompts.
+You are at the opening of a cave, all you have is an old dagger and three gold coins.
+Type 'inventory' to view your items, and write your actions with the verb first and maximum 3 words.")
 end
 
 #läser upp info om spelarens omgivning
@@ -41,7 +37,7 @@ def current_room()
 
 
     if $player_room == "entrance"
-        puts "You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?"
+        fancy_text("You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?")
     
     elsif $player_room == "path"
         if $player_coordinates == [1,2]
@@ -74,34 +70,36 @@ def action(action)
         end
 
         if $player_room == "path" || $player_room == "entrance"
-            if action[0] == "forward" || action[1] == "forward"
-                if $map[$player_coordinates[0] + 1][$player_coordinates[1]] != "path"
-                    valid_input = false
-                    puts "There is no way forward, choose another path"
-                    action = gets.chomp.split
-                else
-                    valid_input = true
-                    $player_coordinates[0] += 1
-                end
-                
-            elsif action[0] == "left" || action[1] == "left"
-                if $map[$player_coordinates[0]][$player_coordinates[1] + 1] != "path" #spelarens vänster är höger på kartan, så måste öka x-värdet
-                    valid_input = false
-                    puts "There is no path to your left, choose another way"
-                    action = gets.chomp.split
-                else
-                    valid_input = true
-                    $player_coordinates[1] += 1
-                end
+            if action[0] != "open"
+                if action[0] == "forward" || action[1] == "forward"
+                    if $map[$player_coordinates[0] + 1][$player_coordinates[1]] != "path"
+                        valid_input = false
+                        puts "There is no way forward, choose another path"
+                        action = gets.chomp.split
+                    else
+                        valid_input = true
+                        $player_coordinates[0] += 1
+                    end
 
-            elsif action[0] == "right" || action[1] == "right"
-                if $map[$player_coordinates[0]][$player_coordinates[1] - 1] != "path" 
-                    valid_input = false
-                    puts "There is no path to your right, choose another way"
-                    action = gets.chomp.split
-                else
-                    valid_input = true
-                    $player_coordinates[1] -= 1
+                elsif action[0] == "left" || action[1] == "left"
+                    if $map[$player_coordinates[0]][$player_coordinates[1] + 1] != "path" #spelarens vänster är höger på kartan, så måste öka x-värdet
+                        valid_input = false
+                        puts "There is no path to your left, choose another way"
+                        action = gets.chomp.split
+                    else
+                        valid_input = true
+                        $player_coordinates[1] += 1
+                    end
+
+                elsif action[0] == "right" || action[1] == "right"
+                    if $map[$player_coordinates[0]][$player_coordinates[1] - 1] != "path" 
+                        valid_input = false
+                        puts "There is no path to your right, choose another way"
+                        action = gets.chomp.split
+                    else
+                        valid_input = true
+                        $player_coordinates[1] -= 1
+                    end
                 end
             end
         elsif $player_room == "room1"
