@@ -1,4 +1,4 @@
-require_relative(Rooms)
+require("./Rooms.rb")
 
 $player_coordinates = [0, 2]
 $coins = 3
@@ -126,7 +126,7 @@ def main()
 
 
     if $player_coordinates == [1, 1]
-        room = Roomlist(rand(0..2))
+        room = roomlist(rand(0..2))
         fancy_text(room[0])
 
         if room[1].include?(action[0]) == true

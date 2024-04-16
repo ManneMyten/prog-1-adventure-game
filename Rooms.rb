@@ -1,9 +1,9 @@
 #array of randomized rooms.
-Roomlist = [room1, room2, room3]
+roomlist = [room3, room4]
 
 #first index = description, second index is possible
-room1 = ["dwnoaosod", possibleactionsroom1]
+room3 = ["dwnoaosod", possibleactionsroom3]
 
 #when action is done, look at room and second index(aka index 1)
 #and check if action is in array(possibleactionsroom1).
-possibleactionsroom1 = ["open", "attack", "walk"]
+possibleactionsroom3 = ["open", "attack", "walk"]
