@@ -1,13 +1,15 @@
+require_relative(Rooms)
+
 $player_coordinates = [0, 2]
 $coins = 3
 $inventory = ["#{$coins} coins", "rusty dagger"]
 
 #Map kordinater map[row][col]
 $map = [
-    ["path", "path", "entrance", "path", "path"], 
-    ["path", "room1", "path", "room2", "path"], 
-    ["path", "room3", "path", "room4", "path"], 
-    ["room5", "empty", "path", "room6", "path"], 
+    ["path", "path", "entrance", "path", "path"],
+    ["path", "room1", "path", "room2", "path"],
+    ["path", "room3", "path", "room4", "path"],
+    ["room5", "empty", "path", "room6", "path"],
     ["room7", "path", "path", "empty", "room8"]
 ]
 
@@ -42,7 +44,7 @@ def current_room()
 
     if $player_room == "entrance"
         puts "You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?"
-    
+
     elsif $player_room == "path"
         if $player_coordinates == [1,2]
             puts "As you walk down the corridor you encounter two doors on either side, while the corridor keeps going. The doors appear to be unlocked."
@@ -58,10 +60,10 @@ def current_room()
 end
 
 #Ska uppdatera olika variabler som inventory och coordinater baserat på användarens input
-def action(action) 
+def action(action)
     valid_input = false
-    
-    
+
+
     while valid_input == false
         if action[0] == "inventory"
             i = 0
@@ -83,7 +85,7 @@ def action(action)
                     valid_input = true
                     $player_coordinates[0] += 1
                 end
-                
+
             elsif action[0] == "left" || action[1] == "left"
                 if $map[$player_coordinates[0]][$player_coordinates[1] + 1] != "path" #spelarens vänster är höger på kartan, så måste öka x-värdet
                     valid_input = false
@@ -95,7 +97,7 @@ def action(action)
                 end
 
             elsif action[0] == "right" || action[1] == "right"
-                if $map[$player_coordinates[0]][$player_coordinates[1] - 1] != "path" 
+                if $map[$player_coordinates[0]][$player_coordinates[1] - 1] != "path"
                     valid_input = false
                     puts "There is no path to your right, choose another way"
                     action = gets.chomp.split
@@ -109,7 +111,7 @@ def action(action)
         end
     end
 
-    
+
 end
 
 def main()
@@ -124,7 +126,16 @@ def main()
         action(user_prompt)
     end
 
-end
 
+    if $player_coordinates == [1, 1]
+        room = Roomlist(rand(0..2))
+        fancy_text(room[0])
+
+        if room[1].include?(action[0]) == true
+            #do action
+        end
+    end
+
+end
 
 main()
