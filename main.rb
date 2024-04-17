@@ -21,7 +21,16 @@ def fancy_text(text)
         print text[i]
         i +=1
     end
-    puts ""
+    puts "\n"
+end
+
+def chest(room)
+    if room == "room1"
+        $coins += 3
+        $inventory << "steel sword"
+        fancy_text "You open the chest and find 3 gold coins and a steel sword, which have now been added to your inventory."
+    end
+
 end
 
 def intro()
@@ -49,16 +58,8 @@ def current_room()
             fancy_text "Further down the dark tunnel you see another set of doors, same as the last ones."
         end
 
-    elsif $player_room == "room1" #Spindelrum?
-        fancy_text "You enter the door to your right to find a dimly lit room with a chest in the center."
-    elsif $player_room == "room3" || $player_room == "room4"
-        room = roomlist(rand(0..1))
-        fancy_text(room[0])
-
-        if room[1].include?(action[0]) == true
-            #do action
-        end
-
+    elsif $player_room.include?("room")
+        fancy_text(rooms($player_room)[0])
     end
 
 
@@ -122,12 +123,16 @@ def action(action)
                     end
                 end
             end
-        elsif $player_room == "room1"
-            $possible_actions = ["open", "exit"]
+        elsif $player_room.include?("room")
+
+            #Before action is done, look at room and second index(aka index 1)
+            #and check if action is in the possible actions.
+            $possible_actions = rooms($player_room)[1]
             if $possible_actions.include?(action[0])
                 valid_input = true
-                if action[0] == "open"
-                    #Kista öppnas
+                #Find which room player is in, then execute action
+                if action[0] + action[1] == "open" + "chest"
+                    chest($player_room)
                 end
             end
         end
