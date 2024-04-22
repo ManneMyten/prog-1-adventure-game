@@ -51,7 +51,7 @@ def current_room()
         fancy_text("You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?")
 
     elsif $player_room == "path"
-        $possible_actions = ["left", "right", "forward", "open"]
+        $possible_actions = ["left", "right", "forward", "back", "open"]
         if $player_coordinates == [1,2]
             fancy_text "As you walk down the corridor you encounter two doors on either side, while the corridor keeps going. The doors appear to be unlocked."
         elsif $player_coordinates == [2,2]
@@ -112,6 +112,16 @@ def action(action)
                         valid_input = true
                         $player_coordinates[1] -= 1
                     end
+
+                elsif action[0] == "back" || action[1] == "back"
+                    if $map[$player_coordinates[0] - 1][$player_coordinates[1]] != "path"
+                        valid_input = false
+                        puts "There is no path to your right, choose another way"
+                        action = gets.chomp.split
+                    else
+                        valid_input = true
+                        $player_coordinates[0] -= 1
+                    end
                 end
 
 
@@ -121,8 +131,19 @@ def action(action)
                         valid_input = true
                         $player_coordinates[1] -= 1
                     end
+                elsif action.include?("left")
+                    if $map[$player_coordinates[0]][$player_coordinates[1] + 1].include?("room")
+                        valid_input = true
+                        $player_coordinates[1] += 1
+                    end
+                elsif action.include?("forward")
+                    if $map[$player_coordinates[0] + 1][$player_coordinates[1]].include?("room")
+                        valid_input = true
+                        $player_coordinates[0] += 1
+                    end
                 end
             end
+
         elsif $player_room.include?("room")
 
             #Before action is done, look at room and second index(aka index 1)
