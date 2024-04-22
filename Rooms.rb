@@ -8,11 +8,11 @@ def rooms(room)
 What will you do?", ["walk", "attack"]]
 
     #array of randomized rooms.
-    roomlist = [rand_room1, rand_room_2]
+    roomlist = [rand_room_1, rand_room_2]
 
     if room == "room1"
         return room1
     elsif room == "room3" || room == "room4"
-        return roomlist(rand(0..1))
+        return roomlist[rand(0..1)]
     end
 end
