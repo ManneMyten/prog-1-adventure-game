@@ -130,10 +130,40 @@ def action(action)
             $possible_actions = rooms($player_room)[1]
             if $possible_actions.include?(action[0])
                 valid_input = true
-                #Find which room player is in, then execute action
-                if action[0] + action[1] == "open" + "chest"
-                    chest($player_room)
+                
+                if $player_room == "room1"
+                    if action[0] + action[1] == "open" + "chest"
+                        chest($player_room)
+                    elsif action[0] == "exit" || action[0] == "leave"
+                        $player_coordinates[1] += 1
+                    end
+
+                elsif $player_room == "room2"
+                    if action[0] == "pick" || action[0] == "take"
+                        $inventory << "Old key"
+                        $room2[1].delete_at($room2[1].index("pick"))
+                        $room2[1].delete_at($room2[1].index("take"))
+                        fancy_text "Old key acquired"
+
+                        user_prompt = gets.chomp.downcase.split
+                        action(user_prompt)
+                    elsif action[0] + action[1] == "look" + "at" || action[0] == "inspect"
+                        if action[1] == "painting" || action[2] == "painting"
+                            fancy_text "The painting is old and worn. It depicts a majestic dragon sleeping \non a mountain of gold and treasures"
+                        elsif action[1] == "key" || action[2] == "key"
+                            fancy_text "The key is heavy and is covered in rust in some areas"
+                        end
+
+                        user_prompt = gets.chomp.downcase.split
+                        action(user_prompt)
+                    elsif action[0] == "exit" || action[0] == "leave"
+                        $player_coordinates[1] -= 1
+                    end
+                elsif $player_room == "room3"
+                    
                 end
+
+                #Find which room player is in, then execute action
             end
         end
     end
