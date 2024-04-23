@@ -92,7 +92,7 @@ def action(action)
                     if $map[$player_coordinates[0] + 1][$player_coordinates[1]] != "path" && $map[$player_coordinates[0] + 1][$player_coordinates[1]] != "entrance"
                         valid_input = false
                         puts "There is no way forward, choose another path"
-                        action = gets.chomp.split
+                        action = gets.chomp.downcase.split
                     else
                         valid_input = true
                         $player_coordinates[0] += 1
@@ -102,7 +102,7 @@ def action(action)
                     if $map[$player_coordinates[0]][$player_coordinates[1] + 1] != "path" && $map[$player_coordinates[0]][$player_coordinates[1] + 1] != "entrance"#spelarens vänster är höger på kartan, så måste öka x-värdet
                         valid_input = false
                         puts "There is no path to your left, choose another way"
-                        action = gets.chomp.split
+                        action = gets.chomp.downcase.split
                     else
                         valid_input = true
                         $player_coordinates[1] += 1
@@ -112,7 +112,7 @@ def action(action)
                     if $map[$player_coordinates[0]][$player_coordinates[1] - 1] != "path" && $map[$player_coordinates[0]][$player_coordinates[1] - 1] != "entrance"
                         valid_input = false
                         puts "There is no path to your right, choose another way"
-                        action = gets.chomp.split
+                        action = gets.chomp.downcase.split
                     else
                         valid_input = true
                         $player_coordinates[1] -= 1
@@ -121,12 +121,15 @@ def action(action)
                 elsif action[0] == "back" || action[1] == "back"
                     if $map[$player_coordinates[0] - 1][$player_coordinates[1]] != "path" && $map[$player_coordinates[0] - 1][$player_coordinates[1]] != "entrance"
                         valid_input = false
-                        puts "There is no path to your right, choose another way"
-                        action = gets.chomp.split
+                        fancy_text "There is no path behind you, choose another way"
+                        action = gets.chomp.downcase.split
                     else
                         valid_input = true
                         $player_coordinates[0] -= 1
                     end
+                else 
+                    fancy_text "That's not a valid action, maybe you misspelled? Try again"
+                    action = gets.chomp.downcase
                 end
 
 
@@ -158,10 +161,11 @@ def action(action)
                 valid_input = true
                 
                 if $player_room == "room1"
-                    if action[0] + action[1] == "open" + "chest"
-                        chest($player_room)
-                    elsif action[0] == "exit" || action[0] == "leave"
+                    if action[0] == "exit" || action[0] == "leave"
                         $player_coordinates[1] += 1
+                        
+                    elsif action[0] + action[1] == "open" + "chest"
+                        chest($player_room)
                     end
 
                 elsif $player_room == "room2"
@@ -178,19 +182,35 @@ def action(action)
                         user_prompt = gets.chomp.downcase.split
                         action(user_prompt)
                     elsif action[0] == "pick" || action[0] == "take"
-                        $inventory << "Old key"
-                        $room2[1].delete_at($room2[1].index("pick"))
-                        $room2[1].delete_at($room2[1].index("take"))
-                        fancy_text "Old key acquired"
+                        if action[1] == "key"
+                            $inventory << "Old key"
+                            #$room2[1].delete_at($room2[1].index("pick"))
+                            #$room2[1].delete_at($room2[1].index("take"))
+                            fancy_text "Old key acquired"
+    
+                            user_prompt = gets.chomp.downcase.split
+                            action(user_prompt)
+                        elsif action[1] == "painting"
+                            $inventory << "Dragon painting"
+                            fancy_text "Painting acquired"
 
-                        user_prompt = gets.chomp.downcase.split
-                        action(user_prompt)
+                            user_prompt = gets.chomp.downcase.split
+                            action(user_prompt)
+                        end
                     end
                 elsif $player_room == "room3"
-                    
+                    if action[0] == "exit" || action[0] == "leave"
+                        $player_coordinates[1] += 1
+                    end
+                elsif $player_room == "room4"
+                    if action[0] == "exit" || action[0] == "leave"
+                        $player_coordinates[1] -= 1
+                    end
                 end
 
                 #Find which room player is in, then execute action
+            else 
+                fancy_text "Invalid action, maybe you spelled wrong? Try again"
             end
         end
     end
