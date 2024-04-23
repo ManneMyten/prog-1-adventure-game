@@ -7,11 +7,11 @@ $possible_actions = []
 
 #Map kordinater map[row][col]
 $map = [
-    ["path", "path", "entrance", "path", "path"],
-    ["path", "room1", "path", "room2", "path"],
-    ["path", "room3", "path", "room4", "path"],
-    ["room5", "empty", "path", "room6", "path"],
-    ["room7", "path", "path", "empty", "room8"]
+    ["path", "path", "entrance", "path", "path", nil],
+    ["path", "room1", "path", "room2", "path", nil],
+    ["path", "room3", "path", "room4", "path", nil],
+    ["room5", "empty", "path", "room6", "path", nil],
+    ["room7", "path", "path", "empty", "room8", nil]
 ]
 
 def fancy_text(text)
@@ -51,11 +51,17 @@ def current_room()
         fancy_text("You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?")
 
     elsif $player_room == "path"
-        $possible_actions = ["left", "right", "forward", "back", "open"]
+        $possible_actions = ["left", "right", "forward", "back", "open", "walk", "go"]
         if $player_coordinates == [1,2]
             fancy_text "As you walk down the corridor you encounter two doors on either side, while the corridor keeps going. The doors appear to be unlocked."
         elsif $player_coordinates == [2,2]
             fancy_text "Further down the dark tunnel you see another set of doors, same as the last ones."
+        elsif $player_coordinates == [3,2]
+            fancy_text "You keep walking even further down the tunnel when you see yet another door, this one only on \nyour left side. This time the door has a rusty lock."
+        elsif $player_coordinates == [4,2]
+            fancy_text "Now the corridor turns sharply to your right, and in the light of your \nlantern it seems to go on for a long distance ahead."
+        elsif $player_coordinates == [0,0]
+            fancy_text "After a few minutes of walking through the tunnel to your right, "
         end
 
     elsif $player_room.include?("room")
@@ -127,9 +133,10 @@ def action(action)
                         valid_input = true
                         $player_coordinates[0] -= 1
                     end
-                else 
+                else
+                    valid_input = false
                     fancy_text "That's not a valid action, maybe you misspelled? Try again"
-                    action = gets.chomp.downcase
+                    action = gets.chomp.downcase.split
                 end
 
 
@@ -166,6 +173,7 @@ def action(action)
                         
                     elsif action[0] + action[1] == "open" + "chest"
                         chest($player_room)
+                        #call action function again
                     end
 
                 elsif $player_room == "room2"
@@ -208,7 +216,6 @@ def action(action)
                     end
                 end
 
-                #Find which room player is in, then execute action
             else 
                 fancy_text "Invalid action, maybe you spelled wrong? Try again"
             end
