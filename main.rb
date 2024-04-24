@@ -1,4 +1,5 @@
 require("./Rooms.rb")
+require("./attacksystem.rb")
 
 $player_coordinates = [0, 2]
 $coins = 3
@@ -166,11 +167,11 @@ def action(action)
             $possible_actions = rooms($player_room)[1]
             if $possible_actions.include?(action[0])
                 valid_input = true
-                
+
                 if $player_room == "room1"
                     if action[0] == "exit" || action[0] == "leave"
                         $player_coordinates[1] += 1
-                        
+
                     elsif action[0] + action[1] == "open" + "chest"
                         chest($player_room)
                         #call action function again
@@ -179,7 +180,7 @@ def action(action)
                 elsif $player_room == "room2"
                     if action[0] == "exit" || action[0] == "leave"
                         $player_coordinates[1] -= 1
-                        
+
                     elsif action[0] + action[1] == "look" + "at" || action[0] == "inspect"
                         if action[1] == "painting" || action[2] == "painting"
                             fancy_text "The painting is old and worn. It depicts a majestic dragon sleeping on a mountain of gold and treasures"
@@ -195,7 +196,7 @@ def action(action)
                             #$room2[1].delete_at($room2[1].index("pick"))
                             #$room2[1].delete_at($room2[1].index("take"))
                             fancy_text "Old key acquired"
-    
+
                             user_prompt = gets.chomp.downcase.split
                             action(user_prompt)
                         elsif action[1] == "painting"
@@ -216,7 +217,7 @@ def action(action)
                     end
                 end
 
-            else 
+            else
                 fancy_text "Invalid action, maybe you spelled wrong? Try again"
             end
         end
