@@ -83,3 +83,10 @@ def enter_room(direction)
 end
 
 
+def path_reader()
+    front_room = $map[$player_coordinates[0] + $player_direction[0], $player_coordinates[1] + $player_direction[1]]
+    
+
+    # pos = $player_coordinates + $player_direction.rotate(90)
+    # $map[pos.y][pos.x]
+end

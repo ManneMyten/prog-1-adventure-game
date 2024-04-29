@@ -1,3 +1,4 @@
+require("./Vector.rb")
 require("./Rooms.rb")
 require("./movement.rb")
 
