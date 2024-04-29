@@ -1,7 +1,7 @@
 require("./Rooms.rb")
 require("./movement.rb")
 
-$player_coordinates = [0, 2]
+
 $coins = 3
 $inventory = ["#{$coins} coins", "rusty dagger"]
 $possible_actions = []
@@ -66,7 +66,8 @@ def current_room()
 end
 
 #Ska uppdatera olika variabler som inventory och coordinater baserat på användarens input
-def action(action)
+def action()
+    action = gets.chomp.downcase.split
     valid_input = false
 
 
@@ -81,74 +82,87 @@ def action(action)
             end
             puts ""
 
-            user_prompt = gets.chomp.downcase.split
-            action(user_prompt)
+            action()
             break
         end
 
         if $player_room == "path" || $player_room == "entrance"
             if action[0] != "open"
                 if action[0] == "forward" || action[1] == "forward"
-                    if $map[$player_coordinates[0] + 1][$player_coordinates[1]] != "path" && $map[$player_coordinates[0] + 1][$player_coordinates[1]] != "entrance"
+                    if !move("fwd")
                         valid_input = false
                         puts "There is no way forward, choose another path"
                         action = gets.chomp.downcase.split
+                        next
                     else
+                        # p $player_coordinates
                         valid_input = true
-                        $player_coordinates[0] += 1
                     end
 
                 elsif action[0] == "left" || action[1] == "left"
-                    if $map[$player_coordinates[0]][$player_coordinates[1] + 1] != "path" && $map[$player_coordinates[0]][$player_coordinates[1] + 1] != "entrance"#spelarens vänster är höger på kartan, så måste öka x-värdet
+                    if !move("left")
                         valid_input = false
-                        puts "There is no path to your left, choose another way"
+                        puts "There is no way to your left, choose another path"
                         action = gets.chomp.downcase.split
+                        next
                     else
                         valid_input = true
-                        $player_coordinates[1] += 1
                     end
 
                 elsif action[0] == "right" || action[1] == "right"
-                    if $map[$player_coordinates[0]][$player_coordinates[1] - 1] != "path" && $map[$player_coordinates[0]][$player_coordinates[1] - 1] != "entrance"
+                    if !move("right")
                         valid_input = false
-                        puts "There is no path to your right, choose another way"
+                        puts "There is no way to your right, choose another path"
                         action = gets.chomp.downcase.split
+                        next
                     else
                         valid_input = true
-                        $player_coordinates[1] -= 1
                     end
 
-                elsif action[0] == "back" || action[1] == "back"
-                    if $map[$player_coordinates[0] - 1][$player_coordinates[1]] != "path" && $map[$player_coordinates[0] - 1][$player_coordinates[1]] != "entrance"
+                elsif action[0] == "back" || action[1] == "back" || action[0] == "backward" || action[1] == "backward"
+                    if !move("back")
                         valid_input = false
-                        fancy_text "There is no path behind you, choose another way"
+                        puts "There is no way backwards, choose another path"
                         action = gets.chomp.downcase.split
+                        next
                     else
                         valid_input = true
-                        $player_coordinates[0] -= 1
                     end
                 else
                     valid_input = false
                     fancy_text "That's not a valid action, maybe you misspelled? Try again"
                     action = gets.chomp.downcase.split
+                    next
                 end
 
 
             else
                 if action.include?("right")
-                    if $map[$player_coordinates[0]][$player_coordinates[1] - 1].include?("room")
+                    if !enter_room("right")
+                        valid_input = false
+                        fancy_text "There is no door to your right, choose another path"
+                        action = gets.chomp.downcase.split
+                        next
+                    else
                         valid_input = true
-                        $player_coordinates[1] -= 1
                     end
                 elsif action.include?("left")
-                    if $map[$player_coordinates[0]][$player_coordinates[1] + 1].include?("room")
+                    if !enter_room("left")
+                        valid_input = false
+                        fancy_text "There is no door to your left, choose another path"
+                        action = gets.chomp.downcase.split
+                        next
+                    else
                         valid_input = true
-                        $player_coordinates[1] += 1
                     end
                 elsif action.include?("forward")
-                    if $map[$player_coordinates[0] + 1][$player_coordinates[1]].include?("room")
+                    if !enter_room("fwd")
+                        valid_input = false
+                        fancy_text "There is no door ahead, choose another path"
+                        action = gets.chomp.downcase.split
+                        next
+                    else
                         valid_input = true
-                        $player_coordinates[0] += 1
                     end
                 end
             end
@@ -163,16 +177,20 @@ def action(action)
                 
                 if $player_room == "room1"
                     if action[0] == "exit" || action[0] == "leave"
-                        $player_coordinates[1] += 1
+                        if !move("back")
+                            p "what??"
+                        end
                         
                     elsif action[0] + action[1] == "open" + "chest"
                         chest($player_room)
-                        #call action function again
+                        action()
                     end
 
                 elsif $player_room == "room2"
                     if action[0] == "exit" || action[0] == "leave"
-                        $player_coordinates[1] -= 1
+                        if !move("back")
+                            p "what??"
+                        end
                         
                     elsif action[0] + action[1] == "look" + "at" || action[0] == "inspect"
                         if action[1] == "painting" || action[2] == "painting"
@@ -181,8 +199,8 @@ def action(action)
                             fancy_text "The key is heavy and is covered in rust in some areas"
                         end
 
-                        user_prompt = gets.chomp.downcase.split
-                        action(user_prompt)
+                        
+                        action()
                     elsif action[0] == "pick" || action[0] == "take"
                         if action[1] == "key"
                             $inventory << "Old key"
@@ -190,14 +208,12 @@ def action(action)
                             #$room2[1].delete_at($room2[1].index("take"))
                             fancy_text "Old key acquired"
     
-                            user_prompt = gets.chomp.downcase.split
-                            action(user_prompt)
+                            action()
                         elsif action[1] == "painting"
                             $inventory << "Dragon painting"
                             fancy_text "Painting acquired"
 
-                            user_prompt = gets.chomp.downcase.split
-                            action(user_prompt)
+                            action()
                         end
                     end
                 elsif $player_room == "room3"
@@ -210,7 +226,7 @@ def action(action)
                     end
                 end
 
-            else 
+            else
                 fancy_text "Invalid action, maybe you spelled wrong? Try again"
             end
         end
@@ -226,9 +242,8 @@ def main()
 
     while restart_game == false
         current_room()
-        user_prompt = gets.chomp.downcase.split
 
-        action(user_prompt)
+        action()
     end
 end
 
