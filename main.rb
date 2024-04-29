@@ -32,6 +32,12 @@ def chest(room)
         fancy_text "You open the chest and find 3 gold coins and a steel sword, which have now been added to your inventory."
     end
 
+    possibleitems = ["healing potion", "enchanted spear", "sword", "3 coins"]
+    random_item
+    if room[0].include?("chest") && room != "room1"
+        random_item = possibleitems[rand(0..3)]
+        fancy_text "you open the chest and find #{random_item}"
+    end
 end
 
 def intro()
@@ -169,8 +175,8 @@ def action(action)
                 valid_input = true
 
                 if $player_room == "room1"
-                    if action[0] == "exit" || action[0] == "leave"
-                        $player_coordinates[1] += 1
+                    if action[0] == "exit" || action[0] == "leave" #******* VIKTIGT ********
+                        $player_coordinates[1] += 1 #OM DET FINNS EN FIENDE I RUMMET SKA MAN INTE FÅ LÄMNA SÅ LÄNGE DEN LEVER
 
                     elsif action[0] + action[1] == "open" + "chest"
                         chest($player_room)

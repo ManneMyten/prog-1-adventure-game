@@ -6,7 +6,7 @@ $room5 = ["Opening the oak door you find, to your surprise, an old man standing 
 
 #first index = description, second index is possible actions
 rand_room_1 = ["As you walk into the room you are met with a chest positioned upon an intricately designed stone stand,\nbut the ominous feeling of a presence in the dark alerts you.\nA giant spider suddenly appears before you falling from the ceiling!\nWhat do you do?", ["open", "exit", "leave", "attack", "walk"], "spider"]
-rand_room_2 = ["Upon entering the room you notice the faint glowing of a torch,\nyou quickly notice the skeleton holding the torch and a sword.What will you do?", ["walk", "exit", "leave", "attack"], "skeleton"]
+rand_room_2 = ["Upon entering the room you notice the faint glowing of a torch,\nyou quickly notice the skeleton holding the torch and a sword. What will you do?", ["walk", "exit", "leave", "attack"], "skeleton"]
 
 #array of randomized rooms.
 $roomlist = [rand_room_1, rand_room_2]
