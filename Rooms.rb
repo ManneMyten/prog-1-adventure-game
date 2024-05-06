@@ -1,4 +1,4 @@
-$room1 = ["You enter the door to your right to find a dimly lit room with a chest in the center.", ["open", "exit", "leave"]]
+$room1 = ["You open the door to find a dimly lit room with a chest in the center.", ["open", "exit", "leave"]]
 $room2 = ["Entering the room you see a table with a rusty old key on it.\nYou also notice a painting hung upon the cobble wall", ["walk", "exit", "leave", "look", "inspect", "pick", "take"]]
 $room3 = []
 $room4 = []
