@@ -38,12 +38,6 @@ end
 def current_room()
     $player_room = $map[$p_pos[0]][$p_pos[1]]
 
-    #innehåller rummen omkring spelaren i ordning [vänster, ner, höger]
-    surrounding_rooms = [$map[$p_pos[0]][$p_pos[1] - 1], $map[$p_pos[0] + 1][$p_pos[1]], $map[$p_pos[0]][$p_pos[1] + 1]]
-
-
-    
-
     if $player_room == "path" || $player_room == "entrance"
         $possible_actions = ["left", "right", "forward", "back", "open", "walk", "go"]
         
@@ -65,7 +59,7 @@ def action()
     while valid_input == false
         if action[0] == "inventory"
             i = 0
-            puts "In your inventory you have:"
+            fancy_text "In your inventory you have:"
             puts ""
             while i < $inventory.length
                 puts $inventory[i]

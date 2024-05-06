@@ -9,12 +9,12 @@ $map = [
 ]
 
 $map_walls = [
-    ["path", "path", "entrance", "path", "path", nil],
-    ["path", "room1r", "path", "room2l", "path", nil],
-    ["path", "room3r", "path", "room4l", "path", nil],
-    ["room5u", "empty", "path", "room6l", "path", nil],
-    ["room7r", "path", "path", "empty", "room8u", nil],
-    [   nil,    nil,    nil,    nil,    nil,    nil]
+    ["path", "path", "entrance", "path", "path", "empty"],
+    ["path", "room1r", "path", "room2l", "path", "empty"],
+    ["path", "room3r", "path", "room4l", "path", "empty"],
+    ["room5u", "empty", "path", "room6l", "path", "empty"],
+    ["room7r", "path", "path", "empty", "room8u", "empty"],
+    ["empty", "empty", "empty", "empty", "empty", "empty"]
 ]
 
 $p_pos = [0, 2]
@@ -56,8 +56,8 @@ def move(direction)
     if collision(direction)
         $p_pos[0] += $p_direction[0]
         $p_pos[1] += $p_direction[1]
-        p $p_direction
-        p $p_pos
+        # p $p_direction
+        # p $p_pos
         return true
     else
         return false
@@ -86,29 +86,27 @@ def enter_room(direction)
     else
         $p_pos[0] += $p_direction[0]
         $p_pos[1] += $p_direction[1]
-        p $p_direction
-        p $p_pos
         return true
     end
 end
 
 
 def path_reader()
-    front_room = $map_walls[$p_pos[0] + $p_direction[0], $p_pos[1] + $p_direction[1]]
+    front_room = $map_walls[$p_pos[0] + $p_direction[0]][$p_pos[1] + $p_direction[1]]
     if front_room.include?("room")
-        if p_direction == [0,1]
+        if $p_direction == [0,1]
             if front_room[-1] == "l"
                 front_room = "a door"
             else 
                 front_room = "a wall"
             end
-        elsif p_direction == [0,-1]
+        elsif $p_direction == [0,-1]
             if front_room[-1] == "r"
                 front_room = "a door"
             else 
                 front_room = "a wall"
             end
-        elsif p_direction == [1,0]
+        elsif $p_direction == [1,0]
             if front_room[-1] == "u"
                 front_room = "a door"
             else
@@ -125,28 +123,33 @@ def path_reader()
         front_room = "the entrance"
     end
 
-    right_room = $map[$p_pos[0] + rotate_vector($p_direction, 90)[0], $p_pos[1] + rotate_vector($p_direction, 90)[1]]
+    right_room = $map_walls[$p_pos[0] + rotate_vector($p_direction, -90)[0]][$p_pos[1] + rotate_vector($p_direction, -90)[1]]
     if right_room.include?("room")
-        if p_direction == [0,1]
-            if right_room[-1] == "l"
-                right_room = "a door"
-            else 
-                right_room = "a wall"
-            end
-        elsif p_direction == [0,-1]
-            if right_room[-1] == "r"
-                right_room = "a door"
-            else 
-                right_room = "a wall"
-            end
-        elsif p_direction == [1,0]
+        if $p_direction == [0,1]
             if right_room[-1] == "u"
+                right_room = "a door"
+            else 
+                right_room = "a wall"
+            end
+        elsif $p_direction == [0,-1]
+            if right_room[-1] == "d"
+                right_room = "a door"
+            else 
+                right_room = "a wall"
+            end
+        elsif $p_direction == [1,0]
+            if right_room[-1] == "r"
                 right_room = "a door"
             else
                 right_room = "a wall"
             end
-        else 
-            right_room = "a wall"
+        elsif $p_direction == [-1,0]
+            if right_room[-1] == "l"
+                
+                right_room = "a door"
+            else
+                right_room = "a wall"
+            end
         end
     elsif right_room == "empty"
         right_room = "a wall"
@@ -156,28 +159,33 @@ def path_reader()
         right_room = "the entrance"
     end
 
-    left_room = $map[$p_pos[0] + rotate_vector($p_direction, -90)[0], $p_pos[1] + rotate_vector($p_direction, -90)[1]]
+    left_room = $map_walls[$p_pos[0] + rotate_vector($p_direction, 90)[0]][$p_pos[1] + rotate_vector($p_direction, 90)[1]]
     if left_room.include?("room")
-        if p_direction == [0,1]
-            if left_room[-1] == "l"
+        if $p_direction == [0,1]
+            if left_room[-1] == "d"
                 left_room = "a door"
             else 
                 left_room = "a wall"
             end
-        elsif p_direction == [0,-1]
-            if left_room[-1] == "r"
-                left_room = "a door"
-            else 
-                left_room = "a wall"
-            end
-        elsif p_direction == [1,0]
+        elsif $p_direction == [0,-1]
             if left_room[-1] == "u"
+                left_room = "a door"
+            else 
+                left_room = "a wall"
+            end
+        elsif $p_direction == [1,0]
+            if left_room[-1] == "l"
                 left_room = "a door"
             else
                 left_room = "a wall"
             end
-        else 
-            left_room = "a wall"
+        elsif $p_direction == [-1,0]
+            if left_room[-1] == "r"
+                
+                left_room[-1] = "a door"
+            else
+                left_room[-1] = "a wall"
+            end
         end
     elsif left_room == "empty"
         left_room = "a wall"
@@ -187,21 +195,21 @@ def path_reader()
         left_room = "the entrance"
     end
 
-    back_room = $map[$p_pos[0] + rotate_vector($p_direction, 180)[0], $p_pos[1] + rotate_vector($p_direction, 180)[1]]
+    back_room = $map_walls[$p_pos[0] + rotate_vector($p_direction, 180)[0]][$p_pos[1] + rotate_vector($p_direction, 180)[1]]
     if back_room.include?("room")
-        if p_direction == [0,1]
+        if $p_direction == [0,1]
             if back_room[-1] == "l"
                 back_room = "a door"
             else 
                 back_room = "a wall"
             end
-        elsif p_direction == [0,-1]
+        elsif $p_direction == [0,-1]
             if back_room[-1] == "r"
                 back_room = "a door"
             else 
                 back_room = "a wall"
             end
-        elsif p_direction == [1,0]
+        elsif $p_direction == [1,0]
             if back_room[-1] == "u"
                 back_room = "a door"
             else
@@ -218,20 +226,20 @@ def path_reader()
         back_room = "the entrance"
     end
 
-    if $p_pos == [0,2]
+    if $p_pos == [0,2] && $p_direction == [1,0]
         return "You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?"
 
-    elsif $p_pos == [1,2]
-        return "As you walk down the corridor you encounter two doors on either side, while the corridor keeps going. The doors appear to be unlocked."
-    elsif $p_pos == [2,2]
+    elsif $p_pos == [1,2] && $p_direction == [1,0]
+        return "As you walk down the corridor you encounter two doors on either side, while the corridor keeps going. The doors \nappear to be unlocked."
+    elsif $p_pos == [2,2] && $p_direction == [1,0]
         return "Further down the dark tunnel you see another set of doors, same as the last ones."
-    elsif $p_pos == [3,2]
+    elsif $p_pos == [3,2] && $p_direction == [1,0]
         return "You keep walking even further down the tunnel when you see yet another door, this one only on \nyour left side. This time the door has a rusty lock."
-    elsif $p_pos == [4,2]
+    elsif $p_pos == [4,2] && $p_direction == [0,1]
         return "Now the corridor turns sharply to your right, and in the light of your \nlantern it seems to go on for a long distance ahead."
-    elsif $p_pos == [0,0]
-        return "After a few minutes of walking through the tunnel to your right, "
-    else 
+    elsif $p_pos == [0,0] && $p_direction == [0,-1]
+        return "After a few minutes of walking through the tunnel, you see it turning abruptly to your left"
+    else
         return "In front of you now is #{front_room}, to your right is #{right_room}, to your left #{left_room} and behind you is #{back_room}"
     end
 
