@@ -149,6 +149,15 @@ def action()
                     else
                         valid_input = true
                     end
+                elsif action.include?("back")
+                    if !enter_room("back")
+                        valid_input = false
+                        fancy_text "There is no door behind you, choose another path"
+                        action = gets.chomp.downcase.split
+                        next
+                    else
+                        valid_input = true
+                    end
                 end
             end
 
@@ -213,6 +222,8 @@ def action()
 
             else
                 fancy_text "Invalid action, maybe you spelled wrong? Try again"
+                action = gets.chomp.downcase.split
+                next
             end
         end
     end

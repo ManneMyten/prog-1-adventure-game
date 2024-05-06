@@ -198,13 +198,13 @@ def path_reader()
     back_room = $map_walls[$p_pos[0] + rotate_vector($p_direction, 180)[0]][$p_pos[1] + rotate_vector($p_direction, 180)[1]]
     if back_room.include?("room")
         if $p_direction == [0,1]
-            if back_room[-1] == "l"
+            if back_room[-1] == "r"
                 back_room = "a door"
             else 
                 back_room = "a wall"
             end
         elsif $p_direction == [0,-1]
-            if back_room[-1] == "r"
+            if back_room[-1] == "l"
                 back_room = "a door"
             else 
                 back_room = "a wall"
