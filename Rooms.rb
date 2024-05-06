@@ -17,9 +17,6 @@ def rooms(room)
     if room == "room1"
         return $room1
 
-    elsif room == "room5"
-        return $room5
-
     elsif room == "room2"
         return $room2
 
@@ -29,6 +26,9 @@ def rooms(room)
     elsif room == "room4" && $room4 != []
         return $room4
 
+    elsif room == "room5"
+        return $room5
+
     elsif room == "room3" || room == "room4"
         randomnum = rand(0..($roomlist.length - 1))
         assignedroom = $roomlist[randomnum]
@@ -36,11 +36,9 @@ def rooms(room)
 
         if room == "room3"
             $room3 = assignedroom
-            $room4 =  $roomlist[0]
             return $room3
         elsif room == "room4"
             $room4 = assignedroom
-            $room3 = $roomlist[0]
             return $room4
         end
     end

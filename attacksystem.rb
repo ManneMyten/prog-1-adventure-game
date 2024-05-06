@@ -7,10 +7,10 @@ $spider_hp = 8
 
 def attack(enemy_hp, weapon)
   if weapon  == "dagger"
-    $damage = rand(0..3) # 0% chans att döda skelett (1 slag)
+    $damage = rand(1..3) # 0% chans att döda skelett (1 slag)
   elsif weapon == "sword"
     $damage = rand(2..6) # 60% chans att döda skelett (1 slag)
-  elsif weapon == "spear" || "enchanted spear" || "enchantedspear"
+  elsif weapon == ("spear" || "enchanted spear" || "enchantedspear")
     $damage = rand(3..8) # 83,333% chans att döda skelett (1 slag)
   end
   return enemy_hp - $damage #skickar tillbaka hur mycket hp fienden har kvar

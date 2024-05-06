@@ -231,6 +231,8 @@ def action(action)
                 end
 
             else
+                p action[0]
+                p $possible_actions
                 fancy_text "Invalid action, maybe you spelled wrong? Try again"
                 user_prompt = gets.chomp.downcase.split
                 action(user_prompt)
