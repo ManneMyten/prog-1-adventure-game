@@ -188,7 +188,36 @@ def path_reader()
     end
 
     back_room = $map[$p_pos[0] + rotate_vector($p_direction, 180)[0], $p_pos[1] + rotate_vector($p_direction, 180)[1]]
-    
+    if back_room.include?("room")
+        if p_direction == [0,1]
+            if back_room[-1] == "l"
+                back_room = "a door"
+            else 
+                back_room = "a wall"
+            end
+        elsif p_direction == [0,-1]
+            if back_room[-1] == "r"
+                back_room = "a door"
+            else 
+                back_room = "a wall"
+            end
+        elsif p_direction == [1,0]
+            if back_room[-1] == "u"
+                back_room = "a door"
+            else
+                back_room = "a wall"
+            end
+        else 
+            back_room = "a wall"
+        end
+    elsif back_room == "empty"
+        back_room = "a wall"
+    elsif back_room == "path"
+        back_room = "a path" #Randomise exakt, typ "pathway" eller "tunnel"
+    elsif back_room == "entrance"
+        back_room = "the entrance"
+    end
+
     if $p_pos == [0,2]
         return "You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?"
 
