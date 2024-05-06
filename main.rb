@@ -33,7 +33,7 @@ def chest(room)
     end
 
     possibleitems = ["potion", "enchanted spear", "sword", "3 gold coins"]
-    random_item
+    random_item = ""
     if room[0].include?("chest") && room != "room1"
         random_item = possibleitems[rand(0..3)]
         fancy_text "you open the chest and find #{random_item}"
