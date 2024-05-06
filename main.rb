@@ -32,11 +32,16 @@ def chest(room)
         fancy_text "You open the chest and find 3 gold coins and a steel sword, which have now been added to your inventory."
     end
 
-    possibleitems = ["healing potion", "enchanted spear", "sword", "3 coins"]
+    possibleitems = ["potion", "enchanted spear", "sword", "3 gold coins"]
     random_item
     if room[0].include?("chest") && room != "room1"
         random_item = possibleitems[rand(0..3)]
         fancy_text "you open the chest and find #{random_item}"
+        if random_item == "3 gold coins"
+            $coins += 3
+        else
+            $inventory.append(random_item)
+        end
     end
 end
 
@@ -73,6 +78,9 @@ def current_room()
 
     elsif $player_room.include?("room")
         fancy_text(rooms($player_room)[0])
+        if rooms($player_room)[2] != nil
+            combat($player_room)
+        end
     end
 
 
@@ -167,7 +175,6 @@ def action(action)
             end
 
         elsif $player_room.include?("room")
-
             #Before action is done, look at room and second index(aka index 1)
             #and check if action is in the possible actions.
             $possible_actions = rooms($player_room)[1]
@@ -225,6 +232,8 @@ def action(action)
 
             else
                 fancy_text "Invalid action, maybe you spelled wrong? Try again"
+                user_prompt = gets.chomp.downcase.split
+                action(user_prompt)
             end
         end
     end
