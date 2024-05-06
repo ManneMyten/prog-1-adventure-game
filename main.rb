@@ -36,28 +36,18 @@ end
 
 #läser upp info om spelarens omgivning
 def current_room()
-    $player_room = $map[$player_coordinates[0]][$player_coordinates[1]]
+    $player_room = $map[$p_pos[0]][$p_pos[1]]
 
     #innehåller rummen omkring spelaren i ordning [vänster, ner, höger]
-    surrounding_rooms = [$map[$player_coordinates[0]][$player_coordinates[1] - 1], $map[$player_coordinates[0] + 1][$player_coordinates[1]], $map[$player_coordinates[0]][$player_coordinates[1] + 1]]
+    surrounding_rooms = [$map[$p_pos[0]][$p_pos[1] - 1], $map[$p_pos[0] + 1][$p_pos[1]], $map[$p_pos[0]][$p_pos[1] + 1]]
 
 
-    if $player_room == "entrance"
-        fancy_text("You have 3 corridors around you, one straight forward and one on either side of you. Which way do you go?")
+    
 
-    elsif $player_room == "path"
+    if $player_room == "path" || $player_room == "entrance"
         $possible_actions = ["left", "right", "forward", "back", "open", "walk", "go"]
-        if $player_coordinates == [1,2]
-            fancy_text "As you walk down the corridor you encounter two doors on either side, while the corridor keeps going. The doors appear to be unlocked."
-        elsif $player_coordinates == [2,2]
-            fancy_text "Further down the dark tunnel you see another set of doors, same as the last ones."
-        elsif $player_coordinates == [3,2]
-            fancy_text "You keep walking even further down the tunnel when you see yet another door, this one only on \nyour left side. This time the door has a rusty lock."
-        elsif $player_coordinates == [4,2]
-            fancy_text "Now the corridor turns sharply to your right, and in the light of your \nlantern it seems to go on for a long distance ahead."
-        elsif $player_coordinates == [0,0]
-            fancy_text "After a few minutes of walking through the tunnel to your right, "
-        end
+        
+        fancy_text(path_reader())
 
     elsif $player_room.include?("room")
         fancy_text(rooms($player_room)[0])
@@ -96,7 +86,7 @@ def action()
                         action = gets.chomp.downcase.split
                         next
                     else
-                        # p $player_coordinates
+                        # p $p_pos
                         valid_input = true
                     end
 
@@ -219,11 +209,11 @@ def action()
                     end
                 elsif $player_room == "room3"
                     if action[0] == "exit" || action[0] == "leave"
-                        $player_coordinates[1] += 1
+                        $p_pos[1] += 1
                     end
                 elsif $player_room == "room4"
                     if action[0] == "exit" || action[0] == "leave"
-                        $player_coordinates[1] -= 1
+                        $p_pos[1] -= 1
                     end
                 end
 
@@ -238,7 +228,7 @@ end
 
 def main()
     #intro()
-    $player_coordinates = [0, 2] #entrance-rummets koordinater
+    $p_pos = [0, 2] #entrance-rummets koordinater
     restart_game = false
 
     while restart_game == false
