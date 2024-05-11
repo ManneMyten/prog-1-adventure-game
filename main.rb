@@ -1,5 +1,6 @@
 require("./Rooms.rb")
 require("./attacksystem.rb")
+require("./save_game.rb")
 
 $player_coordinates = [0, 2]
 $coins = 3
@@ -242,6 +243,8 @@ def action(action)
 end
 
 def main()
+    # Load game state from file if it exists 
+    load_game("saved_game.txt")
     #intro()
     $player_coordinates = [0, 2] #entrance-rummets koordinater
     restart_game = false
@@ -249,6 +252,12 @@ def main()
     while restart_game == false
         current_room()
         user_prompt = gets.chomp.downcase.split
+
+        #Save game if the player wants to save 
+        if user_prompt[0] == "save"
+            save_game("saved_game.txt")
+            next 
+        end
 
         action(user_prompt)
     end
