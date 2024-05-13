@@ -246,7 +246,7 @@ def action()
 end
 
 def main()
-    #intro()
+    intro()
     $p_pos = [0, 2] #entrance-rummets koordinater
     restart_game = false
 
