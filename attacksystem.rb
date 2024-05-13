@@ -1,4 +1,3 @@
-
 $damage = 0
 $hp = 5
 $skeleton_hp =  4
@@ -73,6 +72,8 @@ def combat(room)
   if $hp < 1
     puts "As the #{enemy} hits you, you fall to the ground. \n The darkness slowly creeps in as you ly dying on the cold coarse dungeon floor."
     puts "You have died, another soul is swallowed by the dark dungeon."
+    exit 
     #end game
   end
 end
+

@@ -1,6 +1,12 @@
 require("./Rooms.rb")
 require("./attacksystem.rb")
+<<<<<<< Updated upstream
 require("./save_game.rb")
+=======
+require("./movement.rb")
+require("./save.rb")
+
+>>>>>>> Stashed changes
 
 $player_coordinates = [0, 2]
 $coins = 3
@@ -47,7 +53,7 @@ def chest(room)
 end
 
 def intro()
-    fancy_text("Type your actions with 3-word prompts.
+    fancy_text("Hello #{$name} Type your actions with 3-word prompts.
 You are at the opening of a cave, all you have is an old dagger and three gold coins.
 Type 'inventory' to view your items, and write your actions with the verb first and maximum 3 words.")
 end
@@ -106,6 +112,11 @@ def action(action)
             user_prompt = gets.chomp.downcase.split
             action(user_prompt)
             break
+        end
+
+        if action[0] == "save"
+            save_game("#{$name}.txt")
+            exit
         end
 
         if $player_room == "path" || $player_room == "entrance"
@@ -221,11 +232,11 @@ def action(action)
                             action(user_prompt)
                         end
                     end
-                elsif $player_room == "room3"
+                elsif $player_room == randomrum
                     if action[0] == "exit" || action[0] == "leave"
                         $player_coordinates[1] += 1
                     end
-                elsif $player_room == "room4"
+                elsif $player_room == randomrum
                     if action[0] == "exit" || action[0] == "leave"
                         $player_coordinates[1] -= 1
                     end
@@ -242,11 +253,53 @@ def action(action)
 
 end
 
+def menu() 
+    menu = true 
+
+    while menu == true 
+        fancy_text("1, NEW GAME")
+        fancy_text("2, LOAD GAME")
+        fancy_text("3, RULES")
+        fancy_text("4, QUIT GAME\n")
+
+        choice = gets.chomp 
+
+        if choice == "1"
+            save_game("saved_game.txt")  # Save the current game
+            fancy_text("What is your name? ")
+            $name = gets.chomp 
+            menu = false  
+        elsif choice == "2"
+            load_game("saved_game.txt")  # Load the saved game
+            fancy_text("Welcome back, #{$name}!\n")
+            current_room()  # Show current room
+            action()  # Prompt for player action
+            menu = false
+        elsif choice == "3"  
+            fancy_text("You have to survive this maze. There is a room that allows you to escape and win\n")
+            menu()
+        elsif choice == "4"
+            exit
+        else 
+            fancy_text("You have to choose between 1, 2, 3, or 4")
+            menu()
+        end 
+    end 
+end
+
+
 def main()
+<<<<<<< Updated upstream
     # Load game state from file if it exists 
     load_game("saved_game.txt")
     #intro()
     $player_coordinates = [0, 2] #entrance-rummets koordinater
+=======
+
+    menu()
+    intro()
+    $p_pos = [0, 2] #entrance-rummets koordinater
+>>>>>>> Stashed changes
     restart_game = false
 
     while restart_game == false

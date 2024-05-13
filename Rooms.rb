@@ -3,6 +3,11 @@ $room2 = ["Entering the room you see a table with a rusty old key on it.\nYou al
 $room3 = []
 $room4 = []
 $room5 = ["Opening the oak door you find, to your surprise, an old man standing behind a desk. \nWould you like to buy something? he utters while smiling warmly. \nWhat will you do?", ["open", "walk", "exit", "leave", "buy", "talk"]]
+$room6 = ["You enter a small room with a mysterious aura. There is a chest in the corner.", ["open", "exit", "leave"]]
+$room7 = []
+$room8 = []
+
+
 
 #first index = description, second index is possible actions
 rand_room_1 = ["As you walk into the room you are met with a chest positioned upon an intricately designed stone stand,\nbut the ominous feeling of a presence in the dark alerts you.\nA giant spider suddenly appears before you falling from the ceiling!\nWhat do you do?", ["open", "exit", "leave", "attack", "walk"], "spider"]
@@ -36,12 +41,21 @@ def rooms(room)
 
         if room == "room3"
             $room3 = assignedroom
+<<<<<<< Updated upstream
             $room4 =  $roomlist[0]
             return $room3
         elsif room == "room4"
             $room4 = assignedroom
             $room3 = $roomlist[0]
             return $room4
+=======
+            randomrum = $room3
+            return randomrum
+        elsif room == "room4"
+            $room4 = assignedroom
+            randomrum = $room4
+            return randomrum
+>>>>>>> Stashed changes
         end
     end
 end

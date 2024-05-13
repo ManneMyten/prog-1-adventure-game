@@ -1,0 +1,3 @@
+Coins: 3
+Inventory: 3 coins, rusty dagger
+Player Position: 2, 2
